@@ -8,8 +8,9 @@ const API_URL = 'http://localhost:3000/api';
 // ฟังก์ชัน Login และคืนค่า JWT Token
 const loginUser = async (email, password) => {
   const response = await axios.post(`${API_URL}/login`, { email, password });
-  return response.data.token;
+  return response.data;  // ที่นี้มันจะต้องส่งคืนข้อมูลที่มี token และ user_id
 };
+
 
 const createWalletCurrency = async (token, walletId, currencyType, balance) => {
   const response = await axios.post(`${API_URL}/walletCurrency/create`, {
@@ -51,20 +52,37 @@ const createTransactionWithToken = async (token, transactionData) => {
 const seedDatabase = async () => {
   try {
     // Register users
-    const user1 = await registerUser({ email: "testuser@example.com", password: "securepassword123" });
-    const user2 = await registerUser({ email: "testuser2@example.com", password: "securepassword123" });
+    let user1, user2;
 
-    console.log("Users created:", user1, user2);
+    try {
+      user1 = await registerUser({ email: "testuser@example.com", password: "securepassword123" });
+      console.log("User1 created:", user1);
+    } catch (registerError1) {
+      console.error("Error registering user1:", registerError1.message);
+    }
+
+    try {
+      user2 = await registerUser({ email: "testuser2@example.com", password: "securepassword123" });
+      console.log("User2 created:", user2);
+    } catch (registerError2) {
+      console.error("Error registering user2:", registerError2.message);
+    }
 
     // Login to get tokens
-    const token1 = await loginUser(user1.email, "securepassword123");
-    const token2 = await loginUser(user2.email, "securepassword123");
+    const loginUser1 = await loginUser("testuser@example.com", "securepassword123");
+    const loginUser2 = await loginUser("testuser2@example.com", "securepassword123");
+    
+    console.log("loginUser", loginUser1, loginUser2);
+    console.log("Tokens retrieved:", loginUser1.token, loginUser2.token);
 
-    console.log("Tokens retrieved:", token1, token2);
-
+    const token1 =loginUser1.token
+    const token2 =loginUser2.token
+    
     // Create wallets
-    const wallet1 = await createWallet({ user_id: user1.user_id });
-    const wallet2 = await createWallet({ user_id: user2.user_id });
+    const wallet1 = await createWallet({ user_id: loginUser1.user.user_id });
+    const wallet2 = await createWallet({ user_id: loginUser2.user.user_id });
+    
+    console.log("Wallets created:", wallet1, wallet2);
 
     console.log("Wallets created:", wallet1, wallet2);
 

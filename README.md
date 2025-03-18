@@ -16,13 +16,15 @@
 
     npm install
 
-4. ตั้งค่าไฟล์ .env ด้วยข้อมูล ที่ให้มา
+4. **ตั้งค่าไฟล์ .env ด้วยข้อมูลที่ให้มา**  
+   สร้างไฟล์ `.env` ในโปรเจคของคุณและใส่ข้อมูลต่อไปนี้:
 
-    DB_HOST=gateway01.ap-southeast-1.prod.aws.tidbcloud.com
-    DB_USER=2VE6rDKpKkiNNta.root
-    DB_PASS=5gRJazNGrwdBUWoS
-    DB_NAME=test
-    JWT_SECRET_KEY=your_secret_key_here
+   ```bash
+   DB_HOST=gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+   DB_USER=2VE6rDKpKkiNNta.root
+   DB_PASS=5gRJazNGrwdBUWoS
+   DB_NAME=test
+   JWT_SECRET_KEY=your_secret_key_here
 
 ## วิธีการรันไช้งาน
 
